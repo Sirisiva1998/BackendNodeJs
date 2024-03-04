@@ -16,6 +16,6 @@ const schema=mongoose.Schema({
     },
 });
 
-const loginModel=mongoose.model("LoginModel",schema);
+const registerModel=mongoose.model("RegisterModel",schema);
 
-module.exports=loginModel;
+module.exports=registerModel;
