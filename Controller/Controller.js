@@ -1,7 +1,34 @@
 const registerModel=require('../Model/Registermodel.js');
 
-const loginPage=(req,res)=>{
-   res.send("Working");
+const loginPage=async (req,res)=>{
+   const loginBody=req.body;
+   const {email,password}=loginBody;
+
+   const user=await registerModel.findOne({email:email});
+
+   console.log('login',user);
+    try
+    {
+        if(!user)
+        {
+            res.json({message:"Email Id not registered!"});
+        }
+        else
+        {
+            if(password===user.password)
+            {
+                res.cookie("username",email,{maxAge:900000,httpOnly:true});
+                res.json({message:"Login successfull!",login:true,user:user.name});
+            }
+            else{
+                res.json({message:"Password not correct!",login:false});
+            }
+        }  
+    }
+    catch(err)
+    {
+        res.json({message:err});
+    }
 }
 const registerPage=async (req,res)=>{
     const registerBody=req.body;
@@ -29,7 +56,20 @@ const registerPage=async (req,res)=>{
     {
         res.json({message:err});
     }
-   
  }
- 
-module.exports={loginPage,registerPage};
+
+ const removeCookies=(req,res)=>{
+     const cookie=req.cookies.username;
+     if(cookie)
+     {
+        console.log("expired");
+        res.cookie("username","",{expires:new Date(Date.now())});
+        res.send({cookie:true,msg:"Cookie removed"});
+     }
+     else
+     {
+        res.send({cookie:false,msg:"No cookie found!"});
+     }
+ }
+
+module.exports={loginPage,registerPage,removeCookies};

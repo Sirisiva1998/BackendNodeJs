@@ -1,5 +1,4 @@
 const mongoose=require('mongoose');
-
 const schema=mongoose.Schema({
     name:{
         type:String,
@@ -14,6 +13,17 @@ const schema=mongoose.Schema({
         type:String,
         required:true,
     },
+    cart: [{
+        itemName: {
+            type: String,
+        },
+        itemId: {
+            type: Number
+        },
+        quantity: {
+            type: Number,
+             },
+    }]
 });
 
 const registerModel=mongoose.model("RegisterModel",schema);

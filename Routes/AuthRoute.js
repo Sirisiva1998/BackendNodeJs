@@ -7,5 +7,6 @@ router.post("/login",controller.loginPage);
 
 router.post("/register",controller.registerPage);
 
+router.get("/removecookies",controller.removeCookies);
 
 module.exports=router;
