@@ -1,9 +1,10 @@
 const registerModel=require('../Model/Registermodel.js');
-
+const bcrypt=require('bcrypt');
 const loginPage=async (req,res)=>{
    const loginBody=req.body;
    const {email,password}=loginBody;
 
+   
    const user=await registerModel.findOne({email:email});
 
    console.log('login',user);
@@ -15,7 +16,8 @@ const loginPage=async (req,res)=>{
         }
         else
         {
-            if(password===user.password)
+            const hashDecodedPassword=await bcrypt.compare(password,user.password);
+            if(hashDecodedPassword)
             {
                 res.cookie("username",email,{maxAge:900000,httpOnly:true});
                 res.json({message:"Login successfull!",login:true,user:user.name});
@@ -34,17 +36,18 @@ const registerPage=async (req,res)=>{
     const registerBody=req.body;
     const {name,email,password}=registerBody;
     
-    console.log(name,email,password);
+   
+
     const user=await registerModel.findOne({email:email});
     console.log(user);
     try
     {
+        const hash= await  bcrypt.hash(password, 10)
         if(!user)
         {
-            await registerModel.create({name:name,email:email,password:password});
+            await registerModel.create({name:name,email:email,password:hash});
             res.json({message:"Email registered!"});
             console.log('2',(user));
-      
         }
       else
       {

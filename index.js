@@ -8,7 +8,8 @@ const cookieParser=require('cookie-parser');
 //Setup app
 const app=express();
 
-app.use(cors({credentials:true,
+app.use(cors({
+credentials:true,
  origin:process.env.ORIGIN
 }));
 
@@ -23,4 +24,4 @@ app.use("/cart",cartRoute);
 
 dbConnect();
 
-app.listen(process.env.PORT || 2600,process.env.host,()=>{console.log(`Server running on port: ${process.env.PORT}`)});
+app.listen(process.env.PORT || 2500,process.env.host,()=>{console.log(`Server running on port: ${process.env.PORT}`)});
