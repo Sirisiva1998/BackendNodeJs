@@ -3,13 +3,9 @@ const bcrypt=require('bcrypt');
 const loginPage=async (req,res)=>{
    const loginBody=req.body;
    const {email,password}=loginBody;
-
-   
-   const user=await registerModel.findOne({email:email});
-
-   console.log('login',user);
     try
     {
+        const user=await registerModel.findOne({email:email});
         if(!user)
         {
             res.json({message:"Email Id not registered!"});
